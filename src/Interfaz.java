@@ -56,6 +56,7 @@ public class Interfaz {
 
         
             unaTabla.printearMatriz();
+            //asdajdsjad 
         }
     }
 }
