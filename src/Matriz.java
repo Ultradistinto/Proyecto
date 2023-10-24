@@ -26,20 +26,29 @@ public class Matriz {
 
 
     public void nuevoNumero(){
-        ArrayList<String> ubiCeros = new ArrayList<String>();
+        ArrayList<Integer> ubiCeros = new ArrayList<Integer>();
         int cantCeros;
         Random rand = new Random();
         for(int i = 0; i < this.mat.length;i++){
             for(int j = 0; j < this.mat.length;j++){
                 if(this.mat[i][j] == 0){
-                    ubiCeros.add(i + "," + j);
+                    ubiCeros.add(i);
+                    ubiCeros.add(j);
                 }   
             }
         }
         cantCeros = ubiCeros.size();
         int int_random = rand.nextInt(cantCeros);
-        int fila = ubiCeros.get(int_random).charAt(0) - '0';
-        int col = ubiCeros.get(int_random).charAt(2) - '0';
+        int fila;
+        int col;
+        if(int_random%2 == 0){
+            fila = ubiCeros.get(int_random);
+            col = ubiCeros.get(int_random + 1);
+        }
+        else{
+            col = ubiCeros.get(int_random);
+            fila = ubiCeros.get(int_random - 1);
+        }
         int dosOCuatro = rand.nextInt(10);
         int numero;
 
@@ -75,31 +84,61 @@ public class Matriz {
             }
         }
 
-        if(unMov == "A"){
-            
-        }
-
-        if(unMov.equals("S")){
-            for(int i = this.mat.length - 2; i >= 0;i--){
-                for(int j = 0; j < this.mat.length;j++){
+        if(unMov.equals("A")){
+            for(int i = 0; i < this.mat.length; i++){
+                for(int j = 1; j < this.mat.length; j++){
                     if(this.mat[i][j] != 0){
-                        int k = i + 1;
-                        while(k < this.mat.length - 1 && this.mat[k][j] == 0){
-                            this.mat[k][j] = this.mat[k + 1][j];
-                            this.mat[k + 1][j] = 0;
-                            k++;
+                        int k = j - 1;
+                        while(k >= 0 && this.mat[i][k] == 0){
+                            this.mat[i][k] = this.mat[i][k + 1];
+                            this.mat[i][k + 1] = 0;
+                            k--;
                         }
-                        if(this.mat[k][j] == this.mat[k + 1][j]){
-                            this.mat[k][j] *= 2;
-                            this.mat[k + 1][j] = 0;
+                        if( k >= 0 && this.mat[i][k] == this.mat[i][k + 1]){
+                            this.mat[i][k] *= 2;
+                            this.mat[i][k + 1] = 0;
                         }
                     }
                 }
             }
         }
 
-        if(unMov == "D"){
-            
+        if(unMov.equals("S")){
+            for(int i = this.mat.length - 2; i >= 0; i--){
+                for(int j = 0; j < this.mat.length; j++){
+                    if(this.mat[i][j] != 0){
+                        int k = i + 1; 
+                        while(k < this.mat.length && this.mat[k][j] == 0){
+                            this.mat[k][j] = this.mat[k - 1][j];
+                            this.mat[k - 1][j] = 0;
+                            k++;
+                        }
+                        if(k < this.mat.length && this.mat[k][j] == this.mat[k - 1][j]){
+                            this.mat[k][j] *= 2;
+                            this.mat[k - 1][j] = 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        if(unMov.equals("D")){
+            for(int i = 0; i < this.mat.length; i++){
+                for(int j = this.mat.length - 2; j >= 0; j--){
+                    if(this.mat[i][j] != 0){
+                        int k = j + 1; 
+                        while(k < this.mat.length && this.mat[i][k] == 0){
+                            this.mat[i][k] = this.mat[i][k - 1];
+                            this.mat[i][k - 1] = 0;
+                            k++;
+                        }
+                        if(k < this.mat.length && this.mat[i][k] == this.mat[i][k - 1]){
+                            this.mat[i][k] *= 2;
+                            this.mat[i][k - 1] = 0;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -115,8 +154,11 @@ public class Matriz {
     
     public boolean perdio(){
         boolean perdio = true;
-        for(int i = 0; i < this.mat.length; i++){
+        for(int i = 0; i < this.mat.length && perdio; i++){
             for(int j = 0; j < this.mat.length; j++){
+                if(this.mat[i][j] == 0){
+                    perdio = false;
+                }
                 if (i + 1 < this.mat.length && this.mat[i][j] == this.mat[i + 1][j]) {
                     perdio = false;
                 }
@@ -132,8 +174,10 @@ public class Matriz {
                 if (i - 1 >= 0 && this.mat[i][j] == this.mat[i - 1][j]) {
                     perdio = false;
                 }
-                
             }
+        }
+        if(perdio){
+            System.out.println("Perdio");
         }
         return perdio;
     }

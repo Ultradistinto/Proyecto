@@ -50,13 +50,12 @@ public class Interfaz {
 
             if(!sonIguales){
                 unaTabla.historial.agregarTablero(unaTabla.getMat());
-                perdi = unaTabla.perdio();
                 unaTabla.nuevoNumero();
             }
 
-        
+            perdi = unaTabla.perdio();
             unaTabla.printearMatriz();
-            //asdajdsjad 
+             
         }
     }
 }
